@@ -16,7 +16,7 @@ extern "js" fn _refer(value : Json) -> Json =
   #|(value) => Vue.ref(value)
 
 ///|
-pub(all) struct T {
+pub(all) struct App {
   app : Json
   options : AppOptions
 } derive(ToJson)
@@ -29,7 +29,7 @@ pub(all) struct AppOptions {
 } derive(ToJson)
 
 ///|
-pub fn create(data? : Json, methods? : Json, computed? : Json) -> T {
+pub fn create(data? : Json, methods? : Json, computed? : Json) -> App {
   let options = { data, methods, computed }
   { app: _createApp(options.to_json().stringify()), options }
 }
@@ -48,12 +48,12 @@ pub extern "js" fn _createApp(app : String) -> Json =
   #|}
 
 ///|
-pub fn T::mount(self : T, target : String) -> Unit {
+pub fn App::mount(self : App, target : String) -> Unit {
   _mount(self.app, target) |> ignore
 }
 
 ///|
-pub fn T::setState(self : T, data : Json) -> Unit {
+pub fn App::setState(self : App, data : Json) -> Unit {
   _setState(self.app, data.stringify())
 }
 
